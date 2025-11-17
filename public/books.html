@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Books</title>
+    </head>
+
+    <body>
+        <a href="/">← Retour</a>
+        <h1>Bibliothèque</h1>
+
+        <div id="book-list">Chargement...</div>
+
+        <script src="script-books.js"></script>
+    </body>
+
+    <style>
+        h1 {
+            display: flex;
+            justify-content: center;
+        }
+        .book {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .book-title {
+            font-weight: bold;
+        }
+        .book-series {
+            font-style: italic;
+        }
+        .status {
+            font-weight: bold;
+            color: red;
+        }
+        .status.available {
+            color: green;
+        }
+    </style>
+</html>
