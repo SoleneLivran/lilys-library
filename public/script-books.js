@@ -1,5 +1,20 @@
 'use strict';
 
+/**
+ * @typedef {Object} Book
+ * @property {number} id
+ * @property {string} title
+ * @property {string[]} authors
+ * @property {string|null} [series]
+ * @property {string[]} genres
+ * @property {string|null} [loan]
+ * @property {string|null} [publication_date]
+ * @property {string|null} [editor]
+ * @property {number|null} [pages]
+ * @property {string|null} [isbn]
+ * @property {string|null} [summary]
+ */
+
 async function loadBooks() {
     const container = document.getElementById('book-list');
 
@@ -29,7 +44,29 @@ async function loadBooks() {
                     ${isAvailable ? 'Disponible' : 'Indisponible'}
                   </span>
                 </div>
+                <br/>
             `;
+
+            if (book.summary) {
+                div.innerHTML += `<div class="book-summary">${book.summary}</div>
+                <br/>`
+            }
+
+            if (book.pages) {
+                div.innerHTML += `<div class="book-pages">${book.pages} pages</div>`
+            }
+
+            if (book.editor) {
+                div.innerHTML += `<div class="book-editor">Edité par : ${book.editor}</div>`
+            }
+
+            if (book.publication_date) {
+                div.innerHTML += `<div class="book-pub-date">Date de publication : ${book.publication_date}</div>`
+            }
+
+            if (book.isbn) {
+                div.innerHTML += `<div class="book-isbn">ISBN : ${book.isbn}</div>`
+            }
 
             container.appendChild(div);
         });
