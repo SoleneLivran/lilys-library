@@ -11,7 +11,7 @@ async function loadBooks() {
 
         books.forEach(book => {
             const div = document.createElement('div');
-            const availability = book.status ? 'Disponible' : 'Indisponible';
+            const isAvailable = book.loan === null;
 
             div.className = 'book';
 
@@ -25,8 +25,8 @@ async function loadBooks() {
                 <div>${book.authors}</div>
                 <div>${book.genres}</div>
                 <div>
-                  <span class="status ${book.status === 'available' ? book.status : ''}">
-                    ${availability}
+                  <span class="status ${isAvailable ? 'available' : ''}">
+                    ${isAvailable ? 'Disponible' : 'Indisponible'}
                   </span>
                 </div>
             `;

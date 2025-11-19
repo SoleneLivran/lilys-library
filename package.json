@@ -12,6 +12,7 @@
   "dependencies": {
     "@hapi/hapi": "^21.4.4",
     "@hapi/inert": "^7.1.0",
+    "better-sqlite3": "^12.4.1",
     "csv-parse": "^6.1.0"
   }
 }
