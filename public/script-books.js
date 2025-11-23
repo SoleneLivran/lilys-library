@@ -1,5 +1,7 @@
 'use strict';
 
+import { formatAuthors } from './utils.js';
+
 /**
  * @typedef {Object} Book
  * @property {number} id
@@ -46,7 +48,7 @@ async function loadBooks() {
             }
 
             div.innerHTML += `
-                <div>${book.authors}</div>
+                <div>${formatAuthors(book.authors)}</div>
             `;
 
             if (book.genres && book.genres.length > 0) {

@@ -1,5 +1,7 @@
 'use strict';
 
+import { formatAuthors } from './utils.js';
+
 async function loadGenres() {
     const container = document.getElementById('genres-list');
 
@@ -52,7 +54,7 @@ async function showBooksForGenre(genreId, genreName) {
 
             div.innerHTML = `
                 <div class="book-title"><strong>${book.title}</strong></div>
-                <div class="book-authors">Par : ${book.authors}</div>
+                <div class="book-authors">Par : ${formatAuthors(book.authors)}</div>
             `;
 
             if (book.series) {
