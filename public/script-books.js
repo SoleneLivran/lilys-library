@@ -36,9 +36,27 @@ async function loadBooks() {
                 div.innerHTML += `<div class="book-series">${book.series}</div>`
             }
 
+            if (book.genres) {
+                let bookGenres = '';
+                for (const genre of book.genres) {
+                    bookGenres += genre.name;
+                    div.innerHTML += `
+                `;
+                }
+            }
+
             div.innerHTML += `
                 <div>${book.authors}</div>
-                <div>${book.genres}</div>
+            `;
+
+            if (book.genres && book.genres.length > 0) {
+                const bookGenres = book.genres.map(g => g.name).join(', ');
+                div.innerHTML += `
+                    <div>${bookGenres}</div>
+                `;
+            }
+
+            div.innerHTML += `
                 <div>
                   <span class="status ${isAvailable ? 'available' : ''}">
                     ${isAvailable ? 'Disponible' : 'Indisponible'}

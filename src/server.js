@@ -3,6 +3,7 @@
 import Hapi from '@hapi/hapi';
 import inert from '@hapi/inert';
 import bookRoutes from './routes/books.js';
+import genreRoutes from './routes/genres.js';
 
 export async function createServer() {
     const server = Hapi.server({
@@ -14,13 +15,23 @@ export async function createServer() {
 
     // API routes
     server.route(bookRoutes);
+    server.route(genreRoutes);
 
     // Serve the /books page
     server.route({
         method: 'GET',
         path: '/books',
         handler: (request, h) => {
-            return h.file('public/books.html'); // points to the frontend file
+            return h.file('public/books.html');
+        }
+    });
+
+    // Serve the /genres page
+    server.route({
+        method: 'GET',
+        path: '/genres',
+        handler: (request, h) => {
+            return h.file('public/genres.html');
         }
     });
 
