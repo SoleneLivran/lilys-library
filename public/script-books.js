@@ -1,21 +1,7 @@
 'use strict';
 
-import { formatAuthors } from './utils.js';
-
-/**
- * @typedef {Object} Book
- * @property {number} id
- * @property {string} title
- * @property {string[]} authors
- * @property {string|null} [series]
- * @property {string[]} genres
- * @property {string|null} [loan]
- * @property {string|null} [publication_date]
- * @property {string|null} [editor]
- * @property {number|null} [pages]
- * @property {string|null} [isbn]
- * @property {string|null} [summary]
- */
+import { formatAuthors, formatLanguages, getStatusLabel } from './utils.js';
+import { BOOK_STATUS } from "./constants/bookStatus.js";
 
 async function loadBooks() {
     const container = document.getElementById('book-list');
@@ -28,10 +14,9 @@ async function loadBooks() {
 
         books.forEach(book => {
             const div = document.createElement('div');
-            const isAvailable = book.loan === null;
+            const isAvailable = [BOOK_STATUS.AVAILABLE, BOOK_STATUS.HOME_ONLY].includes(book.status);
 
             div.className = 'book';
-
             div.innerHTML = `<div class="book-title">${book.title}</div>`
 
             if (book.series) {
@@ -49,6 +34,7 @@ async function loadBooks() {
 
             div.innerHTML += `
                 <div>${formatAuthors(book.authors)}</div>
+                <div>${formatLanguages(book.languages)}</div>
             `;
 
             if (book.genres && book.genres.length > 0) {
@@ -60,8 +46,8 @@ async function loadBooks() {
 
             div.innerHTML += `
                 <div>
-                  <span class="status ${isAvailable ? 'available' : ''}">
-                    ${isAvailable ? 'Disponible' : 'Indisponible'}
+                  <span class="status ${isAvailable ? 'available' : 'unavailable'}">
+                    ${getStatusLabel(book.status)}
                   </span>
                 </div>
                 <br/>

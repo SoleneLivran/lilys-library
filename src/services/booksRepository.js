@@ -1,7 +1,8 @@
 import db from '../db/db.js';
+import { BOOK_STATUS } from '../../public/constants/bookStatus.js';
 
 export const booksRepository = {
-    all() {
+    allBorrowable() {
         const books = db.prepare(`
         SELECT
             b.*,
@@ -10,8 +11,9 @@ export const booksRepository = {
         FROM books b
         LEFT JOIN books_genres bg ON b.id = bg.book_id
         LEFT JOIN genres g ON bg.genre_id = g.id
+        WHERE b.status != ?
         ORDER BY b.id
-    `).all();
+    `).all(BOOK_STATUS.NON_BORROWABLE);
 
         return mapGenresToBooks(books);
     },
@@ -25,7 +27,8 @@ export const booksRepository = {
             FROM books b
             JOIN books_genres bg ON b.id = bg.book_id
             LEFT JOIN genres g ON bg.genre_id = g.id
-            WHERE b.id IN (
+            WHERE b.status != 0
+            AND b.id IN (
                 SELECT book_id FROM books_genres WHERE genre_id = ?
             )
             ORDER BY b.id
@@ -44,7 +47,8 @@ function mapGenresToBooks(books) {
                 title: book.title,
                 authors: book.authors,
                 series: book.series,
-                loan: book.loan,
+                languages: book.languages,
+                status: book.status,
                 publication_date: book.publication_date,
                 editor: book.editor,
                 pages: book.pages,

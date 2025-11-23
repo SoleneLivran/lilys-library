@@ -1,7 +1,7 @@
 import { booksRepository } from '../services/booksRepository.js';
 
 export async function getBooks() {
-    return booksRepository.all();
+    return booksRepository.allBorrowable();
 }
 
 export async function getBooksByGenre(request, h) {

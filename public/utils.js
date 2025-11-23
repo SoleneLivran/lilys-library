@@ -1,5 +1,8 @@
 'use strict';
 
+import { LANGUAGES } from "./constants/languages.js";
+import { BOOK_STATUS_LABELS } from "./constants/bookStatus.js";
+
 export function formatAuthors(authorsString) {
     if (!authorsString) return 'non spécifié';
 
@@ -17,6 +20,19 @@ export function formatAuthors(authorsString) {
     if (formattedAuthors.length === 1) {
         return formattedAuthors[0];
     } else {
-        return formattedAuthors.join(' & '); // todo check
+        return formattedAuthors.join(' & ');
     }
+}
+
+export function formatLanguages(languageString) {
+    if (!languageString) return '';
+
+    const codes = languageString.split(',').map(l => l.trim());
+    const names = codes.map(code => LANGUAGES[code] || code);
+
+    return names.join(', ');
+}
+
+export function getStatusLabel(statusCode) {
+    return BOOK_STATUS_LABELS[statusCode] || 'Statut inconnu';
 }
