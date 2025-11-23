@@ -67,25 +67,51 @@ async function loadBooks() {
                 <br/>
             `;
 
+            let detailsDivHtml = '';
+            let hasDetails = false;
+
             if (book.summary) {
-                div.innerHTML += `<div class="book-summary">${book.summary}</div>
-                <br/>`
+                hasDetails = true;
+                detailsDivHtml += `<div class="book-summary">${book.summary}</div><br/>`
             }
 
             if (book.pages) {
-                div.innerHTML += `<div class="book-pages">${book.pages} pages</div>`
+                hasDetails = true;
+                detailsDivHtml += `<div class="book-pages">${book.pages} pages</div>`
             }
 
             if (book.editor) {
-                div.innerHTML += `<div class="book-editor">Edité par : ${book.editor}</div>`
+                hasDetails = true;
+                detailsDivHtml += `<div class="book-editor">Edité par : ${book.editor}</div>`
             }
 
             if (book.publication_date) {
-                div.innerHTML += `<div class="book-pub-date">Date de publication : ${book.publication_date}</div>`
+                hasDetails = true;
+                detailsDivHtml += `<div class="book-pub-date">Date de publication : ${book.publication_date}</div>`
             }
 
             if (book.isbn) {
-                div.innerHTML += `<div class="book-isbn">ISBN : ${book.isbn}</div>`
+                hasDetails = true;
+                detailsDivHtml += `<div class="book-isbn">ISBN : ${book.isbn}</div>`
+            }
+
+            if (hasDetails) {
+                const detailsDiv = document.createElement('div');
+                detailsDiv.className = 'book-details hidden';
+                detailsDiv.innerHTML = detailsDivHtml;
+
+                const toggleButton = document.createElement('span');
+                toggleButton.className = 'toggle-details';
+                toggleButton.textContent = 'Voir les détails';
+
+                toggleButton.addEventListener('click', () => {
+                    const isHidden = detailsDiv.classList.contains('hidden');
+                    detailsDiv.classList.toggle('hidden');
+                    toggleButton.textContent = isHidden ? 'Masquer les détails' : 'Voir les détails';
+                });
+
+                div.appendChild(toggleButton);
+                div.appendChild(detailsDiv);
             }
 
             container.appendChild(div);
