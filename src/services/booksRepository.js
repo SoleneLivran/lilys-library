@@ -13,32 +13,54 @@ export const booksRepository = {
         ORDER BY b.id
     `).all();
 
-        const booksMap = {};
-        for (const book of books) {
-            if (!booksMap[book.id]) {
-                booksMap[book.id] = {
-                    id: book.id,
-                    title: book.title,
-                    authors: book.authors,
-                    series: book.series,
-                    loan: book.loan,
-                    publication_date: book.publication_date,
-                    editor: book.editor,
-                    pages: book.pages,
-                    isbn: book.isbn,
-                    summary: book.summary,
-                    genres: []
-                };
-            }
+        return mapGenresToBooks(books);
+    },
 
-            if (book.genre_id) {
-                booksMap[book.id].genres.push({
-                    id: book.genre_id,
-                    name: book.genre_name
-                });
-            }
+    byGenre(genreId) {
+        const books = db.prepare(`
+            SELECT
+                b.*,
+                g.id as genre_id,
+                g.name as genre_name
+            FROM books b
+            JOIN books_genres bg ON b.id = bg.book_id
+            LEFT JOIN genres g ON bg.genre_id = g.id
+            WHERE b.id IN (
+                SELECT book_id FROM books_genres WHERE genre_id = ?
+            )
+            ORDER BY b.id
+        `).all(genreId);
+
+        return mapGenresToBooks(books);
+    }
+};
+
+function mapGenresToBooks(books) {
+    const booksMap = {};
+    for (const book of books) {
+        if (!booksMap[book.id]) {
+            booksMap[book.id] = {
+                id: book.id,
+                title: book.title,
+                authors: book.authors,
+                series: book.series,
+                loan: book.loan,
+                publication_date: book.publication_date,
+                editor: book.editor,
+                pages: book.pages,
+                isbn: book.isbn,
+                summary: book.summary,
+                genres: []
+            };
         }
 
-        return Object.values(booksMap);
-    },
-};
+        if (book.genre_id) {
+            booksMap[book.id].genres.push({
+                id: book.genre_id,
+                name: book.genre_name
+            });
+        }
+    }
+
+    return Object.values(booksMap);
+}

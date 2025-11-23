@@ -12,6 +12,45 @@
 
         <div id="genres-list">Chargement...</div>
 
+        <div id="books-section" class="hidden">
+            <h2 id="books-genre"></h2>
+            <button id="back-to-genres">← Retour aux genres</button>
+            <div id="books-list"></div>
+        </div>
+
         <script src="script-genres.js"></script>
     </body>
+
+    <style>
+        h1 {
+            display: flex;
+            justify-content: center;
+        }
+        .genre {
+            cursor: pointer;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .genre:hover {
+            background-color: #f0f0f0;
+        }
+        .genre.active {
+            background-color: #e3f2fd;
+            border-color: #2196F3;
+        }
+        #books-section {
+            margin-top: 30px;
+        }
+        .book {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </html>
