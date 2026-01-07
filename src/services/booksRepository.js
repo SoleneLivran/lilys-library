@@ -1,25 +1,25 @@
-import db from '../db/db.js';
+import pool from '../db/db.js';
 import { BOOK_STATUS } from '../../public/constants/bookStatus.js';
 
 export const booksRepository = {
-    allBorrowable() {
-        const books = db.prepare(`
-        SELECT
-            b.*,
-            g.id as genre_id,
-            g.name as genre_name
-        FROM books b
-        LEFT JOIN books_genres bg ON b.id = bg.book_id
-        LEFT JOIN genres g ON bg.genre_id = g.id
-        WHERE b.status != ?
-        ORDER BY b.id
-    `).all(BOOK_STATUS.NON_BORROWABLE);
+    async allBorrowable() {
+        const books = await pool.query(`
+            SELECT
+                b.*,
+                g.id as genre_id,
+                g.name as genre_name
+            FROM books b
+            LEFT JOIN books_genres bg ON b.id = bg.book_id
+            LEFT JOIN genres g ON bg.genre_id = g.id
+            WHERE b.status != $1
+            ORDER BY b.id
+        `, [BOOK_STATUS.NON_BORROWABLE]);
 
-        return mapGenresToBooks(books);
+        return mapGenresToBooks(books.rows);
     },
 
-    byGenre(genreId) {
-        const books = db.prepare(`
+    async byGenre(genreId) {
+        const books = await pool.query(`
             SELECT
                 b.*,
                 g.id as genre_id,
@@ -29,12 +29,12 @@ export const booksRepository = {
             LEFT JOIN genres g ON bg.genre_id = g.id
             WHERE b.status != 0
             AND b.id IN (
-                SELECT book_id FROM books_genres WHERE genre_id = ?
+                SELECT book_id FROM books_genres WHERE genre_id = $1
             )
             ORDER BY b.id
-        `).all(genreId);
+        `, [genreId]);
 
-        return mapGenresToBooks(books);
+        return mapGenresToBooks(books.rows);
     }
 };
 
